@@ -1,0 +1,188 @@
+##:kivy!
+
+<Manager>:
+    Menu:
+        name: 'main_menu'
+    Admin:
+        name: 'admin'
+    Signin:
+        name: 'signin'
+    Login:
+        name: 'login'
+
+<Menu>:
+    BoxLayout:
+        spacing: 10
+        canvas:
+            Color:
+                rgba: 0.1, 0.1, 0.1, 0.1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        orientation: 'vertical'
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'OriShop'
+                ActionButton:
+                    text: 'Admin'
+                    on_release: app.root.current = 'admin'
+                ActionButton:
+                    text: 'Login'
+                    on_release: app.root.current = 'login'
+                ActionButton:
+                    id: signin_button
+                    text: 'Signin'
+                    on_release: app.root.current = 'signin'
+                ActionButton:
+                    text: 'Exit'
+                    on_release: app.stop()
+        ScrollView:
+            BoxLayout:
+                id: box_shop
+                spacing: '10dp'
+                size_hint_y: None
+                height: self.minimum_height
+    Button:
+        text: '+'
+        on_release: root.addProducts()
+        size_hint: None, None
+        width: 60
+        height: 40
+
+<Admin>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Color:
+                rgba: 0.5, 0.5, 0.5, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'Admin'
+                    on_release: app.root.current = 'main_menu'
+                ActionButton:
+                    text: 'Exit'
+                    on_release: app.stop()
+        BoxLayout:
+            Label:
+                id: add_product_question
+            TextInput:
+                id: add_products
+                size_hint_y: None
+                height: '40sp'
+            Button:
+                text: '+'
+                size_hint: None, None
+                on_release: app.root.get_screen('main_menu').addProducts()
+                height: '40sp'
+                width: 80
+
+<Signin>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Color:
+                rgba: 0.5, 0.5, 0.5, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'Signin'
+                    on_release: app.root.current = 'main_menu'
+                ActionButton:
+                    text: 'Exit'
+                    on_release: app.stop()
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 100
+            Label:
+                text: 'Welcome to Ori Shop'
+                font_size: 50
+            BoxLayout:
+                Label:
+                    text: 'Full Name:'
+                TextInput:
+                    id: user_name
+                    size_hint_y: None
+                    height: '30sp'
+            BoxLayout:
+                Label:
+                    text: 'Age:'
+                TextInput:
+                    id: user_age
+            BoxLayout:
+                Label:
+                    text: 'Email:'
+                TextInput:
+                    id: user_email
+            BoxLayout:
+                Label:
+                    text: 'Password:'
+                TextInput:
+                    id: user_password
+        Button:
+            text: 'Signin'
+            on_release: app.root.current = 'main_menu'
+            # Fazer o botão de Logar (ou cadastrar) ficar com o nome do usuário
+            # on_release: app.root.get_screen('main_menu').ids.sign_button.text = 'orion'
+<Login>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'Login'
+                    on_release: app.root.current = 'main_menu'
+                ActionButton:
+                    text: 'Exit'
+                    on_release: app.stop()
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Login'
+
+<Products>:
+    orientation: 'vertical'
+    spacing: 5
+    size_hint: None, None
+    height: 300
+    width: 200
+    id: id
+    canvas:
+        Color:
+            rgba: 0.5, 0.5, 0.5, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+        id: product_seller
+        text: 'Orion'
+        font_size: 15
+    Label:
+        id: product_name
+        text: 'Notebook'
+        font_size: 40
+    BoxLayout:
+        spacing: 10
+        orientation: 'vertical'
+        Label:
+            id: product_price
+            text: '$4,200'
+            font_size: 20
+        Button:
+            text: 'Buy'
+            size_hint: None, None
+            width: 200
+            height: 40
