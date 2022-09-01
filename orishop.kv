@@ -11,6 +11,7 @@
         name: 'login'
 
 <Menu>:
+    box: box_shop
     BoxLayout:
         spacing: 10
         canvas:
@@ -43,14 +44,11 @@
                 spacing: '10dp'
                 size_hint_y: None
                 height: self.minimum_height
-    Button:
-        text: '+'
-        on_release: root.addProducts()
-        size_hint: None, None
-        width: 60
-        height: 40
 
 <Admin>:
+    name: product_name
+    price: product_price
+
     BoxLayout:
         orientation: 'vertical'
         canvas:
@@ -68,20 +66,42 @@
                     text: 'Exit'
                     on_release: app.stop()
         BoxLayout:
+            orientation: 'vertical'
+            padding: 100
             Label:
-                id: add_product_question
-            TextInput:
-                id: add_products
-                size_hint_y: None
-                height: '40sp'
+                text: 'Welcome Admin Screen'
+                font_size: 50
+            BoxLayout:
+                spacing: 20
+                Label:
+                    text: 'Product name:'
+                    size_hint: None, None
+                    height: 35
+                TextInput:
+                    id: product_name
+                    size_hint_y: None
+                    height: '30sp'
+            BoxLayout:
+                spacing: 20
+                Label:
+                    text: 'Product Price:'
+                    size_hint: None, None
+                    height: 30
+                TextInput:
+                    id: product_price
+                    size_hint_y: None
+                    height: '30sp'
             Button:
                 text: '+'
                 size_hint: None, None
-                on_release: app.root.get_screen('main_menu').addProducts()
+                on_release: root.addProducts()
+
                 height: '40sp'
                 width: 80
 
 <Signin>:
+    seller: user_name
+
     BoxLayout:
         orientation: 'vertical'
         canvas:
@@ -129,6 +149,7 @@
         Button:
             text: 'Signin'
             on_release: app.root.current = 'main_menu'
+            on_release: app.root.get_screen('main_menu').ids.signin_button.text = root.ids.user_name.text
             # Fazer o botão de Logar (ou cadastrar) ficar com o nome do usuário
             # on_release: app.root.get_screen('main_menu').ids.sign_button.text = 'orion'
 <Login>:
@@ -167,19 +188,16 @@
             pos: self.pos
             size: self.size
     Label:
-        id: product_seller
-        text: 'Orion'
+        id: product_seller_card
         font_size: 15
     Label:
-        id: product_name
-        text: 'Notebook'
+        id: product_name_card
         font_size: 40
     BoxLayout:
         spacing: 10
         orientation: 'vertical'
         Label:
-            id: product_price
-            text: '$4,200'
+            id: product_price_card
             font_size: 20
         Button:
             text: 'Buy'
