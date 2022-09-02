@@ -7,23 +7,29 @@ class Manager(ScreenManager):
     pass
 
 class Menu(Screen):
-    box = ObjectProperty()
-
+    pass
 class Signin(Screen):
     seller = ObjectProperty(None)
+    def signin(self):
+        #user_age = self.ids.user_age.text
+        #user_email = self.ids.user_email.text
+        #user_password = self.ids.user_password.text
+        # global nomevendedor
+        print(self.seller.text)
+        pass
 
-    def singin(self):
-        user_name = self.ids.user_name.text
-        user_age = self.ids.user_age.text
-        user_email = self.ids.user_email.text
-        user_password = self.ids.user_password.text
-        
 class Admin(Screen):
-    name = ObjectProperty(None)
-    price = ObjectProperty(None)
+    _nomeproduto = ObjectProperty(None)
+    _precoproduto = ObjectProperty(None)
 
     def addProducts(self):
-        Menu.box.add_widget(Products(name = self.name.text, price = self.price, seller = Signin.seller))
+        #self.parent.ids.prd.product_name_card.text = self._nomeproduto.text
+        print(f"""
+        Nome do Vendedor: ???
+        Produto: {self._nomeproduto.text} 
+        Price: ${self._precoproduto.text}""")
+        # print(f"Nome do vendedor é: {_vendedor_nome}")
+        
 class Login(Screen):
     pass
 
