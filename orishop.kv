@@ -9,13 +9,16 @@
         name: 'signin'
     Login:
         name: 'login'
+    Config:
+        name: 'config'
 
 <Menu>:
     BoxLayout:
         spacing: 10
         canvas:
             Color:
-                rgba: 0.1, 0.1, 0.1, 0.1
+                id: menu_color
+                rgba: 0.1, 0.1, 0.1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -24,6 +27,7 @@
             ActionView:
                 ActionPrevious:
                     title: 'OriShop'
+                    on_release: root.irmenu()
                 ActionButton:
                     text: 'Admin'
                     on_release: app.root.current = 'admin'
@@ -37,13 +41,22 @@
                 ActionButton:
                     text: 'Exit'
                     on_release: app.stop()
+                ActionButton:
+                    text: 'Config'
+                    on_release: app.root.current = 'config'
         ScrollView:
             BoxLayout:
                 id: box_shop
                 spacing: '10dp'
                 size_hint_y: None
                 height: self.minimum_height
-
+    Signin:
+        id: sgn
+    Admin:
+        id: adm
+    Products:
+        id: prd
+                
 <Admin>:
     _nomeproduto: produto
     _precoproduto: preço
@@ -147,8 +160,7 @@
             on_press: root.signin()
             on_release: app.root.current = 'main_menu'
             on_release: app.root.get_screen('main_menu').ids.signin_button.text = root.ids.user_name.text
-            # Fazer o botão de Logar (ou cadastrar) ficar com o nome do usuário
-            # on_release: app.root.get_screen('main_menu').ids.sign_button.text = 'orion'
+
 <Login>:
     BoxLayout:
         orientation: 'vertical'
@@ -180,7 +192,7 @@
     id: id
     canvas:
         Color:
-            rgba: 0.5, 0.5, 0.5, 1
+            rgba: 0.4, 0.4, 0.4, 1
         Rectangle:
             pos: self.pos
             size: self.size
@@ -201,3 +213,28 @@
             size_hint: None, None
             width: 200
             height: 40
+
+<Config>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Color:
+                rgba: 0.1, 0.1, 0.1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            padding: 100
+        Label:
+            id: config_title
+            text: 'Config'
+            font_size: 40
+        Button:
+            text: 'Light'
+            on_release: app.root.get_screen('main_menu').canvas.Color.rgba = 1, 1, 1, 1
+        Button:
+            text: 'Dark'
+        Button:
+            text: 'menu'
+            size_hint: None, None
+            on_release: app.root.current = 'main_menu'

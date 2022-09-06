@@ -8,38 +8,47 @@ class Manager(ScreenManager):
 
 class Menu(Screen):
     pass
+
 class Signin(Screen):
     seller = ObjectProperty(None)
+    nome_do_cara = seller
+    def __init__(self, nome = '', idade = '', email = '', senha = '', cadastro = False, **kwargs):
+        super().__init__(**kwargs)
+
     def signin(self):
-        #user_age = self.ids.user_age.text
-        #user_email = self.ids.user_email.text
-        #user_password = self.ids.user_password.text
-        # global nomevendedor
+        nome = self.seller.text
+        age = self.ids.user_age.text
+        email = self.ids.user_email.text
+        password = self.ids.user_password.text
         print(self.seller.text)
-        pass
-
-class Admin(Screen):
-    _nomeproduto = ObjectProperty(None)
-    _precoproduto = ObjectProperty(None)
-
-    def addProducts(self):
-        #self.parent.ids.prd.product_name_card.text = self._nomeproduto.text
-        print(f"""
-        Nome do Vendedor: ???
-        Produto: {self._nomeproduto.text} 
-        Price: ${self._precoproduto.text}""")
-        # print(f"Nome do vendedor é: {_vendedor_nome}")
+        return nome, age, email, password
         
 class Login(Screen):
     pass
 
 class Products(BoxLayout):
     # Criar subclasses, contendo uma tela para cada produto
-    def __init__(self, name = '', price = '', seller = '', **kwargs):
+    def __init__(self, name = '', price = '', seller = '', **kwargs): #price, seller
         super().__init__(**kwargs)
-        name = self.ids.product_name_card.text
-        price = self.ids.product_price_card.text
-        seller = self.ids.product_seller_card.text
+        self.ids.product_name_card.text = name
+        self.ids.product_price_card.text = price
+        #Signin.seller.text = seller
+
+class Admin(Screen):
+    _nomeproduto = ObjectProperty(None)
+    _precoproduto = ObjectProperty(None)
+    #nome_item = Products(name = _nomeproduto.text)
+    def addProducts(self):
+        p1 = self.add_widget(Products(self._nomeproduto.text, self._precoproduto.text))
+        #self.parent.ids.prd.product_name_card.text = self._nomeproduto.text
+        print(f"""
+        Nome do Vendedor: ???
+        Produto: {self._nomeproduto.text} 
+        Price: ${self._precoproduto.text}""")
+        # print(f"Nome do vendedor é: {_vendedor_nome}")
+
+class Config(Screen):
+    pass
 
 class OriShop(App):
     def build(self):
