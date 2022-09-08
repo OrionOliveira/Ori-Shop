@@ -9,6 +9,7 @@
     Config:
         name: 'config'
     Signin:
+        id: sgn
         name: 'signin'
     Login:
         name: 'login'
@@ -34,6 +35,7 @@
                     text: 'Admin'
                     on_release: app.root.current = 'admin'
                 ActionButton:
+                    id: login_button
                     text: 'Login'
                     on_release: app.root.current = 'login'
                 ActionButton:
@@ -56,8 +58,6 @@
 <Admin>:
     _nomeproduto: produto
     _precoproduto: preço
-    _nomeadmin: adm_name
-    trocatxt: title_lbl
 
     BoxLayout:
         orientation: 'vertical'
@@ -70,7 +70,6 @@
         ActionBar:
             ActionView:
                 ActionPrevious:
-                    id: adm_name
                     title: 'Admin'
                     on_release: app.root.current = 'main_menu'
                 ActionButton:
@@ -80,7 +79,6 @@
             orientation: 'vertical'
             padding: 100
             Label:
-                id: title_lbl
                 text: 'Welcome Admin Screen'
                 font_size: 50
             BoxLayout:
@@ -158,11 +156,13 @@
                     id: user_password
         Button:
             text: 'Signin'
-            on_press: root.signin()
-            on_release: app.root.current = 'main_menu'
-            on_release: app.root.get_screen('main_menu').ids.signin_button.text = root.ids.user_name.text
-            on_release: app.root.get_screen('admin').ids.adm_name.title = root.ids.user_name.text
-            on_release: root.test()
+            on_press:
+                if app.root.get_screen('main_menu').ids.signin_button.text == 'Signin': app.root.get_screen('main_menu').ids.signin_button.text = 'Logout'
+                elif app.root.get_screen('main_menu').ids.signin_button.text == 'Logout': app.root.get_screen('main_menu').ids.signin_button.text = 'Signin'
+                #if root.ids.user_name.text != '': app.root.get_screen('main_menu').ids.signin_button.text = 'Logout' 
+                #elif app.root.get_screen('main_menu').ids.signin_button.text == 'Logout': app.root.get_screen('main_menu').ids.login_button.text = root.ids.user_name.text
+                #elif app.root.get_screen('main_menu').ids.signin_button.text == 'Logout' and app.root.get_screen('main_menu').ids.login_button.text == root.ids.user_name.text: app.root.get_screen('main_menu').ids.signin_button.text = 'Signin' 
+                #elif root.ids.user_name.text == '': print('Campo nome é obrigatório!')
 
 <Login>:
     BoxLayout:
@@ -216,6 +216,7 @@
             size_hint: None, None
             width: 200
             height: 40
+            on_release: app.root.ids.mn._telaprodutos.remove_widget(root)
 
 <Config>:
     BoxLayout:
