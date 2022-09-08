@@ -11,26 +11,30 @@ class Manager(ScreenManager):
     pass
 
 class Menu(Screen):
-    pass
+    _telaprodutos = ObjectProperty(None)
+
+    def novoproduto(self):
+        x = Admin()
+        x.add()
+        self.ids.box_shop.add_widget(Products(x._nomeproduto.text, x._precoproduto.text, x._nomeadmin.title))
 
 class Signin(Screen):
     seller = ObjectProperty(None)
     trocatxt = ObjectProperty(None)
-    def __init__(self, nome = '', idade = '', email = '', senha = '', cadastro = False, **kwargs):
+    def __init__(self, nome = '', idade = '', email = '', senha = '', cadastro = True, **kwargs):
         super().__init__(**kwargs)
         self.a = NULL
         self.nome = nome
+        self.cadastro = cadastro
 
     def test(self):
         self.a = 5
         print(self.a)
 
     def signin(self):
-        self.nome = self.seller.text
-        age = self.ids.user_age.text
-        email = self.ids.user_email.text
-        password = self.ids.user_password.text
-        print(self.nome) 
+        self.nome = str(self.seller.text)
+        print(self.nome)
+        return self.nome
         
 class Login(Screen):
     pass
@@ -40,27 +44,19 @@ class Products(BoxLayout):
     def __init__(self, name = '', price = '', seller = '', **kwargs): #price, seller
         super().__init__(**kwargs)
         self.ids.product_name_card.text = name
-        self.name = name
         #self.name = self.ids.product_name_card.text
         self.ids.product_price_card.text = price
         #self.price = self.ids.product_price_card.text
         self.ids.product_seller_card.text = seller
-        self.seller = seller
 
 class Admin(Screen):
     _nomeproduto = ObjectProperty(None)
     _precoproduto = ObjectProperty(None)
+    _nomeadmin = ObjectProperty(None)
     #nome_item = Products(name = _nomeproduto.text)
 
     def addProducts(self):
-        produtos = Signin()
-        produtos.signin()
-        p1 = self.add_widget(Products(self._nomeproduto.text, self._precoproduto.text, str(produtos.name)))
-        #self.parent.ids.prd.product_name_card.text = self._nomeproduto.text
-        print(f"""
-        Nome do Vendedor: {produtos.seller.text}
-        Produto: {self._nomeproduto.text} 
-        Price: ${self._precoproduto.text}""")
+        self.parent.ids.mn._telaprodutos.add_widget(Products(self._nomeproduto.text, self._precoproduto.text, self._nomeadmin.title))
 
 class Config(Screen):
 
@@ -68,7 +64,7 @@ class Config(Screen):
         siginIntance = Signin()
         siginIntance.test()
         #siginIntance.signin()
-        print(f"Nome do vendedor: {siginIntance.x}")
+        print(f"Nome do vendedor: {siginIntance.nome}")
         print(f"10/2 = "+str(siginIntance.a))
 
 class OriShop(App):

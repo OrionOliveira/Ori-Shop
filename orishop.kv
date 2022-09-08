@@ -1,16 +1,8 @@
 ##:kivy!
-<Random>:
-    Menu:
-        id: mn
-    Admin:
-        id: adm
-    Signin:
-        id: sgn
-    Products:
-        id: prdt
 
 <Manager>:
     Menu:
+        id: mn
         name: 'main_menu'
     Admin:
         name: 'admin'
@@ -22,6 +14,7 @@
         name: 'login'
 
 <Menu>:
+    _telaprodutos: box_shop
     BoxLayout:
         spacing: 10
         canvas:
@@ -36,7 +29,7 @@
             ActionView:
                 ActionPrevious:
                     title: 'OriShop'
-                    on_release: root.irmenu()
+                    on_release: root.novoproduto()
                 ActionButton:
                     text: 'Admin'
                     on_release: app.root.current = 'admin'
@@ -59,10 +52,11 @@
                 spacing: '10dp'
                 size_hint_y: None
                 height: self.minimum_height
-                
+
 <Admin>:
     _nomeproduto: produto
     _precoproduto: preço
+    _nomeadmin: adm_name
     trocatxt: title_lbl
 
     BoxLayout:
@@ -76,6 +70,7 @@
         ActionBar:
             ActionView:
                 ActionPrevious:
+                    id: adm_name
                     title: 'Admin'
                     on_release: app.root.current = 'main_menu'
                 ActionButton:
@@ -166,6 +161,7 @@
             on_press: root.signin()
             on_release: app.root.current = 'main_menu'
             on_release: app.root.get_screen('main_menu').ids.signin_button.text = root.ids.user_name.text
+            on_release: app.root.get_screen('admin').ids.adm_name.title = root.ids.user_name.text
             on_release: root.test()
 
 <Login>:
