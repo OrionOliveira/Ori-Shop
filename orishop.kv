@@ -134,46 +134,79 @@
                     on_release: app.stop()
         BoxLayout:
             orientation: 'vertical'
-            padding: 100
+            padding: '20sp'
+            spacing: 20
             Label:
                 text: 'Welcome to Ori Shop'
                 font_size: 50
             BoxLayout:
+                spacing: 15
                 Label:
-                    text: 'Full Name:'
+                    text: 'Name:'
+                    size_hint: None, None
+                    height: '35sp'
+                    width: '90sp'
                 TextInput:
                     id: user_name
-                    size_hint_y: None
+                    size_hint: None, None
+                    width: '455sp'
                     height: '30sp'
             BoxLayout:
+                spacing: 15
                 Label:
                     text: 'Age:'
+                    size_hint: None, None
+                    height: '35sp'
+                    width: '90sp'
                 TextInput:
                     id: user_age
+                    size_hint: None, None
+                    width: '455sp'
+                    height: '30sp'
             BoxLayout:
+                spacing: 15
                 Label:
                     text: 'Email:'
+                    size_hint: None, None
+                    height: '35sp'
+                    width: '90sp'
                 TextInput:
                     id: user_email
+                    size_hint: None, None
+                    width: '455sp'
+                    height: '30sp'
             BoxLayout:
+                spacing: 20
                 Label:
                     text: 'Password:'
+                    size_hint: None, None
+                    height: '35sp'
+                    width: '95sp'
                 TextInput:
                     id: user_password
+                    size_hint: None, None
+                    width: '450sp'
+                    height: '30sp'
         Button:
+            size_hint: None, None
+            width: '300dp'
             text: 'Signin'
             on_press: app.root.get_screen('main_menu').ids.login_button.text = root.ids.user_name.text
             on_press: app.root.get_screen('main_menu').ids.signin_button.text = 'Logout'
-            on_release: app.root.current = 'main_menu'
             on_release: app.root.get_screen('admin').ids.adm_name.title = str(root.ids.user_name.text)
-            on_release: root.signin()
+            on_press:
+                if root.ids.user_name == '': print('Campo nome é obrigatório!')
+            on_press:
+                if root.ids.user_name != '': root.signin()
+            on_release:
+                if root.ids.user_name != '': app.root.current = 'main_menu'
 
 <Login>:
     BoxLayout:
         orientation: 'vertical'
         canvas:
             Color:
-                rgba: 1, 1, 1, 1
+                rgba: 0.1, 0.1, 0.1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -187,8 +220,39 @@
                     on_release: app.stop()
         BoxLayout:
             orientation: 'vertical'
+            padding: '30sp'
+            spacing: -90
             Label:
                 text: 'Login'
+                font_size: 60
+            BoxLayout:
+                spacing: 15
+                Label:
+                    text: 'Email:'
+                    size_hint: None, None
+                    height: '35sp'
+                    width: '90sp'
+                TextInput:
+                    size_hint: None, None
+                    width: '455sp'
+                    height: '30sp'
+            BoxLayout:
+                spacing: 15
+                Label:
+                    text: 'Password:'
+                    size_hint: None, None
+                    height: '35sp'
+                    width: '95sp'
+                TextInput:
+                    size_hint: None, None
+                    width: '450sp'
+                    height: '30sp'
+        Button:
+            text: 'Login'
+            size_hint: None, None
+            width: '200sp'
+            on_release: app.root.current = 'admin'
+
 
 <Products>:
     orientation: 'vertical'
