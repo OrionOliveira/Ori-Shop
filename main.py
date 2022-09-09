@@ -13,33 +13,28 @@ class Manager(ScreenManager):
 class Menu(Screen):
     _telaprodutos = ObjectProperty(None)
 
+    def Signed(self):
+        if self.ids.signin_button.text == 'Logout':
+            self.ids.sigin_button.text = 'Signin'
+        self.ids.login_button.text = self.parent.ids.sgn.seller.text
+
     def removeProduct(self):
         self.ids.box_shop.remove_widget()
-    #def novoproduto(self):
-    #    x = Admin()
-    #    x.add()
-    #    self.ids.box_shop.add_widget(Products(x._nomeproduto.text, x._precoproduto.text, x._nomeadmin.title))
 
 class Signin(Screen):
     seller = ObjectProperty(None)
-    trocatxt = ObjectProperty(None)
     def __init__(self, nome = '', idade = '', email = '', senha = '', cadastro = False, **kwargs):
         super().__init__(**kwargs)
         self.a = NULL
         self.nome = nome
         self.cadastro = cadastro
 
-    def test(self):
-        self.a = 5
-        print(self.a)
-
     def signin(self):
         if self.cadastro == False:
             self.nome = str(self.seller.text)
-            print(self.nome)
-        if self.cadastro == True:
-            print("Este nome de usurário já existe!")
-        return self.nome, self.cadastro
+            self.cadastro = True
+            print('Cadastrado!')
+        return 
         
 class Login(Screen):
     pass

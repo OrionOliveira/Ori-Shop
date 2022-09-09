@@ -32,16 +32,21 @@
                     title: 'OriShop'
                     on_release: root.novoproduto()
                 ActionButton:
-                    text: 'Admin'
-                    on_release: app.root.current = 'admin'
-                ActionButton:
                     id: login_button
                     text: 'Login'
-                    on_release: app.root.current = 'login'
+                    on_release: 
+                        if root.ids.login_button.text == 'Login': app.root.current = 'login'
+                        elif root.ids.login_button.text != 'Login': app.root.current = 'admin'
                 ActionButton:
                     id: signin_button
                     text: 'Signin'
-                    on_release: app.root.current = 'signin'
+                    on_press:
+                        if root.ids.signin_button.text == 'Signin': app.root.current = 'signin'
+                        elif root.ids.signin_button.text == 'Logout': root.ids.login_button.text = 'Login'
+                    on_release:
+                        if root.ids.login_button.text == 'Login': app.root.ids.sgn.seller.text = '' #app.root.get_screen('signin').ids.user_name.text = ''
+                    on_release:
+                        if root.ids.signin_button.text == 'Logout': root.ids.signin_button.text = 'Signin'
                 ActionButton:
                     text: 'Exit'
                     on_release: app.stop()
@@ -70,6 +75,7 @@
         ActionBar:
             ActionView:
                 ActionPrevious:
+                    id: adm_name
                     title: 'Admin'
                     on_release: app.root.current = 'main_menu'
                 ActionButton:
@@ -79,7 +85,7 @@
             orientation: 'vertical'
             padding: 100
             Label:
-                text: 'Welcome Admin Screen'
+                text: 'Welcome back'
                 font_size: 50
             BoxLayout:
                 spacing: 20
@@ -156,13 +162,11 @@
                     id: user_password
         Button:
             text: 'Signin'
-            on_press:
-                if app.root.get_screen('main_menu').ids.signin_button.text == 'Signin': app.root.get_screen('main_menu').ids.signin_button.text = 'Logout'
-                elif app.root.get_screen('main_menu').ids.signin_button.text == 'Logout': app.root.get_screen('main_menu').ids.signin_button.text = 'Signin'
-                #if root.ids.user_name.text != '': app.root.get_screen('main_menu').ids.signin_button.text = 'Logout' 
-                #elif app.root.get_screen('main_menu').ids.signin_button.text == 'Logout': app.root.get_screen('main_menu').ids.login_button.text = root.ids.user_name.text
-                #elif app.root.get_screen('main_menu').ids.signin_button.text == 'Logout' and app.root.get_screen('main_menu').ids.login_button.text == root.ids.user_name.text: app.root.get_screen('main_menu').ids.signin_button.text = 'Signin' 
-                #elif root.ids.user_name.text == '': print('Campo nome é obrigatório!')
+            on_press: app.root.get_screen('main_menu').ids.login_button.text = root.ids.user_name.text
+            on_press: app.root.get_screen('main_menu').ids.signin_button.text = 'Logout'
+            on_release: app.root.current = 'main_menu'
+            on_release: app.root.get_screen('admin').ids.adm_name.title = str(root.ids.user_name.text)
+            on_release: root.signin()
 
 <Login>:
     BoxLayout:
