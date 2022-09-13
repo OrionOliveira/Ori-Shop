@@ -55,27 +55,37 @@ class Login(Screen):
     pass
 
 class Products(BoxLayout):
-    def __init__(self, name = '', price = '', seller = '', **kwargs):
+    def __init__(self, name = '', price = '', seller = '', id = 1, amount = 1, **kwargs):
         super().__init__(**kwargs)
+        self.id = id
         self.ids.product_name_card.text = name
         self.ids.product_price_card.text = price
         self.ids.product_seller_card.text = seller
+        self.amount = amount
 
 class Admin(Screen):
     _nomeproduto = ObjectProperty(None)
     _precoproduto = ObjectProperty(None)
 
     def addProducts(self):
-        self.parent.ids.mn._telaprodutos.add_widget(Products(self._nomeproduto.text, self._precoproduto.text, self.parent.ids.sgn.seller.text))
+        nome = self._nomeproduto.text
+        price = self._precoproduto.text
+        seller = self.parent.ids.sgn.seller.text
+        self.parent.ids.mn._telaprodutos.add_widget(Products(nome, price, seller))
+        return nome
 
 class Config(Screen):
-
+    def teste():
+        a = input("Qual seu nome?")
+        print(f"Olá {a} seja bem vindo!")
+        return a
     # def outro_test(self):
     #     siginIntance = Signin()
     #     siginIntance.test()
     #     print(f"Nome do vendedor: {siginIntance.nome}")
     #     print(f"10/2 = "+str(siginIntance.a))
     pass
+
 
 class OriShop(App):
     def build(self):
