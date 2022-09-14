@@ -1,5 +1,4 @@
 ##:kivy!
-
 <Manager>:
     Menu:
         id: mn
@@ -44,7 +43,7 @@
                         if root.ids.signin_button.text == 'Signin': app.root.current = 'signin'
                         elif root.ids.signin_button.text == 'Logout': root.ids.login_button.text = 'Login'
                     on_release:
-                        if root.ids.login_button.text == 'Login': app.root.ids.sgn.seller.text = '' #app.root.get_screen('signin').ids.user_name.text = ''
+                        if root.ids.login_button.text == 'Login': app.root.ids.sgn._name.text = ''
                     on_release:
                         if root.ids.signin_button.text == 'Logout': root.ids.signin_button.text = 'Signin'
                 ActionButton:
@@ -115,7 +114,10 @@
                 width: 80
 
 <Signin>:
-    seller: user_name
+    _name: user_name
+    _age: user_age
+    _email: user_email
+    _password: user_password
     BoxLayout:
         orientation: 'vertical'
         canvas:
@@ -191,15 +193,8 @@
             size_hint: None, None
             width: '300dp'
             text: 'Signin'
-            on_press: app.root.get_screen('main_menu').ids.login_button.text = root.ids.user_name.text
-            on_press: app.root.get_screen('main_menu').ids.signin_button.text = 'Logout'
-            on_release: app.root.get_screen('admin').ids.adm_name.title = str(root.ids.user_name.text)
             on_press:
-                if root.ids.user_name == '': print('Campo nome é obrigatório!')
-            on_press:
-                if root.ids.user_name != '': root.signin()
-            on_release:
-                if root.ids.user_name != '': app.root.current = 'main_menu'
+                root.signin()
 
 <Login>:
     BoxLayout:
@@ -251,7 +246,7 @@
             text: 'Login'
             size_hint: None, None
             width: '200sp'
-            on_release: app.root.current = 'admin'
+            on_release: root.login()
 
 
 <Products>:

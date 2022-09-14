@@ -1,16 +1,29 @@
 import pyodbc
-import main as mn
+from main import Admin, Signin, Config
 
-nome = mn.Admin.addProducts()
+dados_conexao = ( 
+    "Driver={SQL Server};"
+    "Server=USAINBOLT\SQLORION;"
+    "Database=OriShop;"
+    )
 
-print(f"""
-Produtos
-Nome: {nome}
-Preço: 4200
-Vendedor: Orion
-""")
+print("Connecting...")
+conexao = pyodbc.connect(dados_conexao)
 
+cursor = conexao.cursor()
 
-hack_nome = mn.Config.teste()
+def database_save(nome = '', idade = '', email = '', senha = ''):
+    comando = f""" INSERT INTO Usuários
+        VALUES
+            ('{nome}', '{idade}', '{email}', '{senha}')"""
+    print("Adicionado ao banco de dados!")
+    cursor.execute(comando)
+    cursor.commit( )
 
-print(f"Nome obtido: {hack_nome}")
+def print_usuário(nome = '', idade = '', email = '', senha = ''):
+    print(f"""
+        Nome: {nome}
+        Idade: {idade}
+        Email: {email}
+        Senha: {senha}
+        """)
