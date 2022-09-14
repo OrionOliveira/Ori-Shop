@@ -14,6 +14,6 @@ Esse projeto é apenas para fins de testes, não dará para realmente comprar al
 *Requisitos para rodar o projeto*
   * Baixar o Python https://www.python.org/downloads/
   * Bibliotecas necessárias 
-    * pip install Kivy; https://kivy.org/doc/stable/gettingstarted/installation.html
-    * pip install matplotlib; https://matplotlib.org/stable/users/getting_started/
-    * Download SQL; https://www.microsoft.com/en-us/sql-server/developer-get-started/
+    * Kivy; https://kivy.org/doc/stable/gettingstarted/installation.html
+    * matplotlib; https://matplotlib.org/stable/users/getting_started/
+    * SQL; https://www.microsoft.com/en-us/sql-server/developer-get-started/
