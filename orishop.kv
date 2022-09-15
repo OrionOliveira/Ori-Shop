@@ -197,6 +197,9 @@
                 root.signin()
 
 <Login>:
+    email: email_login
+    password: password_login
+
     BoxLayout:
         orientation: 'vertical'
         canvas:
@@ -228,6 +231,7 @@
                     height: '35sp'
                     width: '90sp'
                 TextInput:
+                    id: email_login
                     size_hint: None, None
                     width: '455sp'
                     height: '30sp'
@@ -239,6 +243,7 @@
                     height: '35sp'
                     width: '95sp'
                 TextInput:
+                    id: password_login
                     size_hint: None, None
                     width: '450sp'
                     height: '30sp'
@@ -246,7 +251,7 @@
             text: 'Login'
             size_hint: None, None
             width: '200sp'
-            on_release: root.login()
+            on_release: root.logar()
 
 
 <Products>:
@@ -305,4 +310,4 @@
             text: 'menu'
             size_hint: None, None
             on_release: app.root.current = 'main_menu'
-            on_release: root.outro_test()
+            on_release: root.teste()

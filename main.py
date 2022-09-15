@@ -60,6 +60,7 @@ class Signin(Screen):
             #Senha: {senha}
             #""")
             database.database_save(self.nome, self.idade, self.email, self.senha)
+            
         
     def saveData(self):
         with open('users.json', 'w') as data:
@@ -70,7 +71,14 @@ class Signin(Screen):
             self.users_list = json.load(data)
             
 class Login(Screen):
-    pass
+    email = ObjectProperty(None)
+    password = ObjectProperty(None)
+
+    def logar(self):
+        database.login(self.email.text, self.password.text)
+
+    def trocar_tela(self):
+        self.parent.current = 'admin'
 
 class Products(BoxLayout):
     def __init__(self, name = '', price = '', seller = '', id = 1, amount = 1, **kwargs):
@@ -96,10 +104,9 @@ class Admin(Screen):
         return nome
 
 class Config(Screen):
-    def teste():
-        a = input("Qual seu nome?")
-        print(f"Olá {a} seja bem vindo!")
-        return a
+    def teste(self):
+        database.print_usuário(2)
+        database.print_usuário(1)
     # def outro_test(self):
     #     siginIntance = Signin()
     #     siginIntance.test()
