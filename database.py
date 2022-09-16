@@ -1,11 +1,11 @@
 import pyodbc
 import pandas as pd
-from main import Admin, Signin, Config, Login
 
 dados_conexao = ( 
     "Driver={SQL Server};"
     "Server=USAINBOLT\SQLORION;"
     "Database=OriShop;"
+    "Trusted_Connection=yes"
     )
 
 print("Connecting...")
@@ -23,45 +23,20 @@ def database_save(nome = '', idade = '', email = '', senha = ''):
     cursor.commit()
     print(f"Usuário(s) adicionado(s): {str(count)}")
 
-def print_usuário(c = 0):
-    query = ("INSERT INTO Usuários(nome, idade, email, senha) VALUES ('Raul', 18, 'raul@gmail.com', 13289674)")
-    # Usuários
-    if c == 1:
-        print("Usuários")
-        for row in cursor.execute(query):
-            print(f"""
-            ====================================
-            Nome: {row.nome}
-            Idade: {row.idade}
-            Email: {row.email}
-            Senha: {row.senha}
-            ====================================""")
-    # Número de usuários
-    elif c == 2:
-        print("Número de Usuários")
-        count = cursor.execute(query).rowcount
-        print(f"Rows inserted: {str(count)}")
-        cursor.commit()
+def signin():
+    pass
 
-def login(email = '', senha = '', login = False):
-    lista_emails = []
-    lista_senhas = []
-
-    query1 = ("SELECT email FROM Usuários")
-    query2 = ("SELECT senha FROM Usuários")
-
-    for e in cursor.execute(query1):
-        lista_emails.append(e.email)
-    for s in cursor.execute(query2):
-        lista_senhas.append(s.senha)
+def login(email = '', senha = ''):
+    lista_emails = email_check()
+    lista_senhas = password_check()
     
     if email != '':
         if email in lista_emails:
             if senha != '':
                 if senha in lista_senhas:
                     print("Seja bem vindo(a)!")
-                    l = Login()
-                    l.trocar_tela()
+                    user_info(email)
+                    return True
                 else: 
                     print("Senha incorreta!")
             else:
@@ -70,4 +45,34 @@ def login(email = '', senha = '', login = False):
             print("Email não cadastrado, cadastrar?")
     else:
         print("Campo email é obrigatório!")
-    
+        return False
+
+def email_check():
+    lista_emails = []
+    query1 = ("SELECT email FROM Usuários")
+
+    for e in cursor.execute(query1):
+        lista_emails.append(e.email)
+    return lista_emails
+
+def password_check():
+    lista_senhas = []
+    query2 = ("SELECT senha FROM Usuários")
+
+    for s in cursor.execute(query2):
+        lista_senhas.append(s.senha)
+    return lista_senhas
+
+def user_info(email):
+    user_list = []
+    query = """
+    USE OriShop
+    SELECT nome FROM Usuários WHERE email='orion@gmail.com'"""
+    for i in cursor.execute(query):
+        print(i.nome, i.idade, i.email, i.senha)
+
+    #User_dic = {f'Nome': {user_list[0]}, 
+    #             'Idade': {user_list[1]}, 
+    #             'Email': {user_list[2]}, 
+    #             'Senha': {user_list[3]}}
+    #print(User_dic)

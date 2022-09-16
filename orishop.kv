@@ -33,19 +33,14 @@
                 ActionButton:
                     id: login_button
                     text: 'Login'
-                    on_release: 
+                    on_release:
                         if root.ids.login_button.text == 'Login': app.root.current = 'login'
                         elif root.ids.login_button.text != 'Login': app.root.current = 'admin'
                 ActionButton:
                     id: signin_button
                     text: 'Signin'
                     on_press:
-                        if root.ids.signin_button.text == 'Signin': app.root.current = 'signin'
-                        elif root.ids.signin_button.text == 'Logout': root.ids.login_button.text = 'Login'
-                    on_release:
-                        if root.ids.login_button.text == 'Login': app.root.ids.sgn._name.text = ''
-                    on_release:
-                        if root.ids.signin_button.text == 'Logout': root.ids.signin_button.text = 'Signin'
+                        root.resignin()
                 ActionButton:
                     text: 'Exit'
                     on_release: app.stop()

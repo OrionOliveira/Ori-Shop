@@ -4,10 +4,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 import database 
-import json
-
-class random(BoxLayout):
-    pass
 
 class Manager(ScreenManager):
     pass
@@ -18,8 +14,20 @@ class Menu(Screen):
     def removeProduct(self):
         self.ids.box_shop.remove_widget()
 
+    def resignin(self):
+        btn_name = self.ids.signin_button.text
+
+        if btn_name == 'Logout':
+            self.ids.login_button.text = 'Login'
+            btn_name = 'Signin'
+        elif btn_name == 'Signin':
+            self.parent.ids.sgn._name.text = ''
+            self.parent.ids.sgn._age.text = ''
+            self.parent.ids.sgn._email.text = ''
+            self.parent.ids.sgn._password.text = ''
+            self.parent.current = 'signin'
+
 class Signin(Screen):
-    users_list = []
     _name = ObjectProperty(None)
     _age = ObjectProperty(None)
     _email = ObjectProperty(None)
@@ -27,12 +35,10 @@ class Signin(Screen):
     
     def __init__(self, nome = '', idade = '', email = '', senha = '', **kwargs):
         super().__init__(**kwargs)
-        self.loadData()
-        self.a = NULL
         self.nome = nome
         self.idade = idade
         self.email = email
-        self.senha = senha        
+        self.senha = senha
 
     def signin(self):
         self.nome = str(self._name.text)
@@ -42,43 +48,29 @@ class Signin(Screen):
 
         if self.nome == '' or self.idade == '' or self.email == '' or self.senha == '':
             print('Preencha os campos obrigatórios!')
-        elif self.nome in self.users_list:
-            print('Esse usuário já existe, deseja logar?')
+        #elif self.email in self.users_list:
+        #    print('Esse usuário já existe, deseja logar?')
+        #    return False
         else:
-            self.users_list.append(self.nome)
-            self.saveData()
-            print('Cadastrado!')
-            print(f"Lista de usuários: {self.users_list}")
             self.parent.ids.mn.ids.login_button.text = self.nome
             self.parent.ids.mn.ids.signin_button.text = "Logout"
             self.parent.current = 'main_menu'
-            #usuário = [self.nome, self.idade, self.email, self.senha]
-            #print(f"""
-            #Nome: {nome}
-            #Idade: {idade}
-            #Email: {email}
-            #Senha: {senha}
-            #""")
             database.database_save(self.nome, self.idade, self.email, self.senha)
-            
-        
-    def saveData(self):
-        with open('users.json', 'w') as data:
-            json.dump(self.users_list, data)
-
-    def loadData(self):
-        with open('users.json', 'r') as data:
-            self.users_list = json.load(data)
-            
 class Login(Screen):
     email = ObjectProperty(None)
     password = ObjectProperty(None)
 
     def logar(self):
-        database.login(self.email.text, self.password.text)
-
-    def trocar_tela(self):
-        self.parent.current = 'admin'
+        c = database.login(self.email.text, self.password.text)
+        if c == True:
+            self.parent.current = 'admin'
+            self.email.text = ''
+            self.password.text = ''
+            self.parent.ids.mn.ids.login_button.text = Signin()._name.text
+            self.parent.ids.mn.ids.signin_button.text = 'Logout'
+            # Dicionário
+        else:
+            print('Tenta denovo')
 
 class Products(BoxLayout):
     def __init__(self, name = '', price = '', seller = '', id = 1, amount = 1, **kwargs):
@@ -93,9 +85,6 @@ class Admin(Screen):
     _nomeproduto = ObjectProperty(None)
     _precoproduto = ObjectProperty(None)
 
-    #def usa_modulo(x):
-    #    database.print_nome()
-
     def addProducts(self):
         nome = self._nomeproduto.text
         price = self._precoproduto.text
@@ -105,15 +94,7 @@ class Admin(Screen):
 
 class Config(Screen):
     def teste(self):
-        database.print_usuário(2)
-        database.print_usuário(1)
-    # def outro_test(self):
-    #     siginIntance = Signin()
-    #     siginIntance.test()
-    #     print(f"Nome do vendedor: {siginIntance.nome}")
-    #     print(f"10/2 = "+str(siginIntance.a))
-    pass
-
+        database.user_info('orion@gmail.com')
 
 class OriShop(App):
     def build(self):
