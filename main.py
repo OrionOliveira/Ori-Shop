@@ -3,7 +3,8 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
-import database 
+from DatabaseFiles import database
+from telas import Config as cf
 
 class Manager(ScreenManager):
     pass
@@ -19,7 +20,7 @@ class Menu(Screen):
 
         if btn_name == 'Logout':
             self.ids.login_button.text = 'Login'
-            btn_name = 'Signin'
+            self.ids.signin_button.text = 'Signin'
         elif btn_name == 'Signin':
             self.parent.ids.sgn._name.text = ''
             self.parent.ids.sgn._age.text = ''
@@ -48,29 +49,34 @@ class Signin(Screen):
 
         if self.nome == '' or self.idade == '' or self.email == '' or self.senha == '':
             print('Preencha os campos obrigatórios!')
-        #elif self.email in self.users_list:
-        #    print('Esse usuário já existe, deseja logar?')
-        #    return False
         else:
             self.parent.ids.mn.ids.login_button.text = self.nome
             self.parent.ids.mn.ids.signin_button.text = "Logout"
             self.parent.current = 'main_menu'
             database.database_save(self.nome, self.idade, self.email, self.senha)
+
 class Login(Screen):
     email = ObjectProperty(None)
     password = ObjectProperty(None)
 
     def logar(self):
         c = database.login(self.email.text, self.password.text)
-        if c == True:
+        name = c[1]
+        if True in c:
             self.parent.current = 'admin'
             self.email.text = ''
             self.password.text = ''
-            self.parent.ids.mn.ids.login_button.text = Signin()._name.text
+            self.parent.ids.mn.ids.login_button.text = name
             self.parent.ids.mn.ids.signin_button.text = 'Logout'
             # Dicionário
         else:
             print('Tenta denovo')
+        
+class Config(Screen):
+    def trocar_tema(self, tema):
+        c = cf.theme(tema)
+        print(c)
+        #self.ids.color.rgba = c
 
 class Products(BoxLayout):
     def __init__(self, name = '', price = '', seller = '', id = 1, amount = 1, **kwargs):
@@ -91,10 +97,6 @@ class Admin(Screen):
         seller = self.parent.ids.sgn._name.text
         self.parent.ids.mn._telaprodutos.add_widget(Products(nome, price, seller))
         return nome
-
-class Config(Screen):
-    def teste(self):
-        database.user_info('orion@gmail.com')
 
 class OriShop(App):
     def build(self):

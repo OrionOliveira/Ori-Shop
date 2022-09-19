@@ -286,6 +286,7 @@
         orientation: 'vertical'
         canvas:
             Color:
+                id: color
                 rgba: 0.1, 0.1, 0.1, 1
             Rectangle:
                 pos: self.pos
@@ -298,11 +299,17 @@
             font_size: 40
         Button:
             text: 'Light'
-            on_release: 
+            on_release: root.trocar_tema('light')
         Button:
             text: 'Dark'
+            on_press: root.trocar_tema('dark')
+        Button:
+            text: 'Blue'
+            on_press: root.trocar_tema('blue')
+        Button:
+            text: 'Red'
+            on_press: root.trocar_tema('red')
         Button:
             text: 'menu'
             size_hint: None, None
-            on_release: app.root.current = 'main_menu'
-            on_release: root.teste()
+            #on_release: 

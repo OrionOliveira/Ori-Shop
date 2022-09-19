@@ -22,6 +22,8 @@ def database_save(nome = '', idade = '', email = '', senha = ''):
     count = cursor.execute(comando).rowcount
     cursor.commit()
     print(f"Usuário(s) adicionado(s): {str(count)}")
+    y = pd.read_sql("SELECT * FROM Usuários", conexao)
+    print(y.head())
 
 def signin():
     pass
@@ -34,9 +36,12 @@ def login(email = '', senha = ''):
         if email in lista_emails:
             if senha != '':
                 if senha in lista_senhas:
-                    print("Seja bem vindo(a)!")
-                    user_info(email)
-                    return True
+                    s = user_info(email)
+                    if senha in s:
+                        print("Seja bem vindo(a)!")
+                        nome = s[0]
+                        print(nome)
+                    return True, nome
                 else: 
                     print("Senha incorreta!")
             else:
@@ -64,15 +69,16 @@ def password_check():
     return lista_senhas
 
 def user_info(email):
-    user_list = []
-    query = """
-    USE OriShop
-    SELECT nome FROM Usuários WHERE email='orion@gmail.com'"""
+    query = f"""SELECT [nome], [senha] FROM Usuários
+    WHERE email = '{email}'
+    """
     for i in cursor.execute(query):
-        print(i.nome, i.idade, i.email, i.senha)
+        nome = i[0]
+        senhaa = i[1]
+        print(f"""
+        Nome: {nome}
+        Senha: {senhaa}""")
+        return nome, senhaa
 
-    #User_dic = {f'Nome': {user_list[0]}, 
-    #             'Idade': {user_list[1]}, 
-    #             'Email': {user_list[2]}, 
-    #             'Senha': {user_list[3]}}
-    #print(User_dic)
+    df = pd.read_sql(query, conexao)
+    print(df.head())
