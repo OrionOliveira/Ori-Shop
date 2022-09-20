@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from kivy.app import App 
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
@@ -28,18 +27,20 @@ class Menu(Screen):
             self.parent.ids.sgn._password.text = ''
             self.parent.current = 'signin'
 
+l = ''
 class Signin(Screen):
     _name = ObjectProperty(None)
     _age = ObjectProperty(None)
     _email = ObjectProperty(None)
     _password = ObjectProperty(None)
     
-    def __init__(self, nome = '', idade = '', email = '', senha = '', **kwargs):
+    def __init__(self, nome = '', idade = '', email = '', senha = '', cadastro = False, **kwargs):
         super().__init__(**kwargs)
         self.nome = nome
         self.idade = idade
         self.email = email
         self.senha = senha
+        self.cadastro = cadastro
 
     def signin(self):
         self.nome = str(self._name.text)
@@ -47,30 +48,47 @@ class Signin(Screen):
         self.email = str(self._email.text)
         self.senha = str(self._password.text)
 
-        if self.nome == '' or self.idade == '' or self.email == '' or self.senha == '':
+        if self.nome or self.idade or self.email or self.senha == '':
             print('Preencha os campos obrigatórios!')
         else:
             self.parent.ids.mn.ids.login_button.text = self.nome
             self.parent.ids.mn.ids.signin_button.text = "Logout"
             self.parent.current = 'main_menu'
+            self.cadastro = True
+            l = self.email
             database.database_save(self.nome, self.idade, self.email, self.senha)
 
 class Login(Screen):
     email = ObjectProperty(None)
     password = ObjectProperty(None)
 
+    def __init__(self, nome = '', idade = '', emaill = '', senhaa = '', login = False, **kwargs):
+        super().__init__(**kwargs)
+        self.login = login
+        self.nome = nome
+        self.idade = idade
+        self.email = emaill
+        self.senha = senhaa
+
     def logar(self):
-        c = database.login(self.email.text, self.password.text)
-        name = c[1]
-        if True in c:
-            self.parent.current = 'admin'
-            self.email.text = ''
-            self.password.text = ''
-            self.parent.ids.mn.ids.login_button.text = name
-            self.parent.ids.mn.ids.signin_button.text = 'Logout'
-            # Dicionário
+        if Login().login == False:
+            c = database.login(self.email.text, self.password.text)
+            if c == False:
+                print('Tenta denovo')      
+            else:
+                self.nome = c[1]
+                self.idade = c[2]
+                self.emaill = c[3]
+                self.senhaa = c[4]
+                self.login = True
+                self.parent.current = 'user'
+                self.email.text = ''
+                self.password.text = ''
+                self.parent.ids.mn.ids.login_button.text = self.nome
+                self.parent.ids.mn.ids.signin_button.text = 'Logout'
+                l = self.email.text
         else:
-            print('Tenta denovo')
+            return self.nome, self.senhaa, self.emaill, self.password
         
 class Config(Screen):
     def trocar_tema(self, tema):
@@ -79,24 +97,30 @@ class Config(Screen):
         #self.ids.color.rgba = c
 
 class Products(BoxLayout):
-    def __init__(self, name = '', price = '', seller = '', id = 1, amount = 1, **kwargs):
+    def __init__(self, name = '', price = '', seller = '', **kwargs):
         super().__init__(**kwargs)
-        self.id = id
         self.ids.product_name_card.text = name
         self.ids.product_price_card.text = price
         self.ids.product_seller_card.text = seller
-        self.amount = amount
 
-class Admin(Screen):
+class User(Screen):
+    _nome_user = ObjectProperty(None)
+    _age_user = ObjectProperty(None)
+    _email_user = ObjectProperty(None)
+    _password_user = ObjectProperty(None)
     _nomeproduto = ObjectProperty(None)
     _precoproduto = ObjectProperty(None)
 
     def addProducts(self):
-        nome = self._nomeproduto.text
-        price = self._precoproduto.text
-        seller = self.parent.ids.sgn._name.text
-        self.parent.ids.mn._telaprodutos.add_widget(Products(nome, price, seller))
-        return nome
+        database.addProducts(self._nomeproduto.text, self._precoproduto.text)
+        x = database.dt_user_info(l)
+        print(x)
+        nome_p = self._nomeproduto.text
+        price = (f"R${self._precoproduto.text}")
+        #seller = x[0]
+        #seller = self.parent.ids.sgn._name.text
+        seller = "Orion"
+        self.parent.ids.mn._telaprodutos.add_widget(Products(nome_p, price, seller))
 
 class OriShop(App):
     def build(self):

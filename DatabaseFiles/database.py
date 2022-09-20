@@ -1,3 +1,4 @@
+from multiprocessing.connection import wait
 import pyodbc
 import pandas as pd
 
@@ -36,18 +37,25 @@ def login(email = '', senha = ''):
         if email in lista_emails:
             if senha != '':
                 if senha in lista_senhas:
-                    s = user_info(email)
-                    if senha in s:
+                    s = dt_user_info(email)
+                    if senha == s[3]:
                         print("Seja bem vindo(a)!")
                         nome = s[0]
+                        idade = s[1]
                         print(nome)
-                    return True, nome
+                        return True, nome, idade, email, senha
+                    else:
+                        print("Senha incorreta!")
+                        return False
                 else: 
                     print("Senha incorreta!")
+                    return False
             else:
                 print("Campo senha é obrigatório!")
+                return False
         else:
             print("Email não cadastrado, cadastrar?")
+            return False
     else:
         print("Campo email é obrigatório!")
         return False
@@ -68,17 +76,28 @@ def password_check():
         lista_senhas.append(s.senha)
     return lista_senhas
 
-def user_info(email):
-    query = f"""SELECT [nome], [senha] FROM Usuários
+def dt_user_info(email):
+    query = f"""SELECT * FROM Usuários
     WHERE email = '{email}'
     """
     for i in cursor.execute(query):
-        nome = i[0]
-        senhaa = i[1]
+        nome_user = i[0]
+        idade_user = i[1]
+        email_user = i[2]
+        senha_user = i[3]
         print(f"""
-        Nome: {nome}
-        Senha: {senhaa}""")
-        return nome, senhaa
+        Nome: {nome_user}
+        Idade: {idade_user}
+        Email: {email_user}
+        Senha: {senha_user}""")
+        return nome_user, idade_user, email_user, senha_user
 
     df = pd.read_sql(query, conexao)
     print(df.head())
+
+def addProducts(nome_produto, preco_produto):
+    seller = "Orion"
+    query = f"""INSERT INTO Produtos(id, nome, price, seller, amount)
+        VALUES
+            (1, '{nome_produto}', {preco_produto}, '{seller}', 1)
+    """

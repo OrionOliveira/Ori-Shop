@@ -3,8 +3,8 @@
     Menu:
         id: mn
         name: 'main_menu'
-    Admin:
-        name: 'admin'
+    User:
+        name: 'user'
     Config:
         name: 'config'
     Signin:
@@ -35,7 +35,7 @@
                     text: 'Login'
                     on_release:
                         if root.ids.login_button.text == 'Login': app.root.current = 'login'
-                        elif root.ids.login_button.text != 'Login': app.root.current = 'admin'
+                        elif root.ids.login_button.text != 'Login': app.root.current = 'user'
                 ActionButton:
                     id: signin_button
                     text: 'Signin'
@@ -54,7 +54,7 @@
                 size_hint_y: None
                 height: self.minimum_height
 
-<Admin>:
+<User>:
     _nomeproduto: produto
     _precoproduto: preço
 
@@ -70,7 +70,7 @@
             ActionView:
                 ActionPrevious:
                     id: adm_name
-                    title: 'Admin'
+                    title: 'user'
                     on_release: app.root.current = 'main_menu'
                 ActionButton:
                     text: 'Exit'
