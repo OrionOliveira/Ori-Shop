@@ -3,7 +3,7 @@ Esse projeto é apenas para fins de testes, não dará para realmente comprar al
 
 *Ideias para o projeto:*
 
-  * Criar um app que contenha Cadastro, Login, Comprar produtos, Configurações(trocar tema, idioma, resolução, etc);
+  * Criar um app que contenha Cadastro, Login, Comprar produtos;
   * Fazer com que o app calcule o total a pagar e salve todas as informações de compras e usuários em um Banco de Dados;
   * Criar uma inteligência artificial que compre sozinha;
   * Dashboard com as informações de venda da “empresa”;
