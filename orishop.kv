@@ -5,8 +5,6 @@
         name: 'main_menu'
     User:
         name: 'user'
-    Config:
-        name: 'config'
     Signin:
         id: sgn
         name: 'signin'
@@ -44,9 +42,6 @@
                 ActionButton:
                     text: 'Exit'
                     on_release: app.stop()
-                ActionButton:
-                    text: 'Config'
-                    on_release: app.root.current = 'config'
         ScrollView:
             BoxLayout:
                 id: box_shop
@@ -70,7 +65,7 @@
             ActionView:
                 ActionPrevious:
                     id: adm_name
-                    title: 'user'
+                    title: 'User'
                     on_release: app.root.current = 'main_menu'
                 ActionButton:
                     text: 'Exit'
@@ -280,36 +275,3 @@
             width: 200
             height: 40
             on_release: app.root.ids.mn._telaprodutos.remove_widget(root)
-
-<Config>:
-    BoxLayout:
-        orientation: 'vertical'
-        canvas:
-            Color:
-                id: color
-                rgba: 0.1, 0.1, 0.1, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        BoxLayout:
-            padding: 100
-        Label:
-            id: config_title
-            text: 'Config'
-            font_size: 40
-        Button:
-            text: 'Light'
-            on_release: root.trocar_tema('light')
-        Button:
-            text: 'Dark'
-            on_press: root.trocar_tema('dark')
-        Button:
-            text: 'Blue'
-            on_press: root.trocar_tema('blue')
-        Button:
-            text: 'Red'
-            on_press: root.trocar_tema('red')
-        Button:
-            text: 'menu'
-            size_hint: None, None
-            #on_release: 

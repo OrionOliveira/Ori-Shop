@@ -2,8 +2,9 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
-from DatabaseFiles import database
-from telas import Config as cf
+from DatabaseFiles import connection_database, user_database, products_database
+from Telas import signin
+from kivy.graphics import *
 
 class Manager(ScreenManager):
     pass
@@ -27,20 +28,11 @@ class Menu(Screen):
             self.parent.ids.sgn._password.text = ''
             self.parent.current = 'signin'
 
-l = ''
 class Signin(Screen):
     _name = ObjectProperty(None)
     _age = ObjectProperty(None)
     _email = ObjectProperty(None)
     _password = ObjectProperty(None)
-    
-    def __init__(self, nome = '', idade = '', email = '', senha = '', cadastro = False, **kwargs):
-        super().__init__(**kwargs)
-        self.nome = nome
-        self.idade = idade
-        self.email = email
-        self.senha = senha
-        self.cadastro = cadastro
 
     def signin(self):
         self.nome = str(self._name.text)
@@ -48,15 +40,17 @@ class Signin(Screen):
         self.email = str(self._email.text)
         self.senha = str(self._password.text)
 
-        if self.nome or self.idade or self.email or self.senha == '':
+        if self.nome == '' or self.idade == '' or self.email == '' or self.senha == '':
             print('Preencha os campos obrigatórios!')
         else:
+            global email
             self.parent.ids.mn.ids.login_button.text = self.nome
             self.parent.ids.mn.ids.signin_button.text = "Logout"
             self.parent.current = 'main_menu'
             self.cadastro = True
-            l = self.email
-            database.database_save(self.nome, self.idade, self.email, self.senha)
+            email = self.email
+            user_database.database_save(self.nome, self.idade, self.email, self.senha)
+            print("\033[32mSignin sucessfuly!")
 
 class Login(Screen):
     email = ObjectProperty(None)
@@ -72,13 +66,15 @@ class Login(Screen):
 
     def logar(self):
         if Login().login == False:
-            c = database.login(self.email.text, self.password.text)
+            c = user_database.login(self.email.text, self.password.text)
             if c == False:
-                print('Tenta denovo')      
+                pass 
             else:
+                global email
                 self.nome = c[1]
                 self.idade = c[2]
                 self.emaill = c[3]
+                email = self.emaill
                 self.senhaa = c[4]
                 self.login = True
                 self.parent.current = 'user'
@@ -86,15 +82,10 @@ class Login(Screen):
                 self.password.text = ''
                 self.parent.ids.mn.ids.login_button.text = self.nome
                 self.parent.ids.mn.ids.signin_button.text = 'Logout'
-                l = self.email.text
+                print("\033[32mLogin sucessfuly!\033[m")
         else:
             return self.nome, self.senhaa, self.emaill, self.password
         
-class Config(Screen):
-    def trocar_tema(self, tema):
-        c = cf.theme(tema)
-        print(c)
-        #self.ids.color.rgba = c
 
 class Products(BoxLayout):
     def __init__(self, name = '', price = '', seller = '', **kwargs):
@@ -103,23 +94,20 @@ class Products(BoxLayout):
         self.ids.product_price_card.text = price
         self.ids.product_seller_card.text = seller
 
+email = ''
 class User(Screen):
-    _nome_user = ObjectProperty(None)
-    _age_user = ObjectProperty(None)
-    _email_user = ObjectProperty(None)
-    _password_user = ObjectProperty(None)
     _nomeproduto = ObjectProperty(None)
     _precoproduto = ObjectProperty(None)
 
     def addProducts(self):
-        database.addProducts(self._nomeproduto.text, self._precoproduto.text)
-        x = database.dt_user_info(l)
-        print(x)
+        signin.print_oi()
+        global email
+        products_database.addProducts(self._nomeproduto.text, self._precoproduto.text)
+        print(f"\033[32mO item {self._nomeproduto.text} foi adicionado ao banco de dados!\033[m")
+        x = user_database.dt_user_info(email)
         nome_p = self._nomeproduto.text
-        price = (f"R${self._precoproduto.text}")
-        #seller = x[0]
-        #seller = self.parent.ids.sgn._name.text
-        seller = "Orion"
+        price = (f"\033[33mR${str(self._precoproduto.text)}\033[m")
+        seller = x[0]
         self.parent.ids.mn._telaprodutos.add_widget(Products(nome_p, price, seller))
 
 class OriShop(App):
