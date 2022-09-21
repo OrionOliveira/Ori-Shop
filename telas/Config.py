@@ -2,7 +2,7 @@ themes = {
     'Light': [1, 1, 1, 1],
     'Dark': [0.1, 0.1, 0.1, 1],
     'Blue': [0.1, 0.1, 1, 1],
-    'Red:': [1, 0.1, 0.1, 1]}
+    'Red': [1, 0.1, 0.1, 1]}
 
 def theme(in_tema):
     if in_tema == 'light':
