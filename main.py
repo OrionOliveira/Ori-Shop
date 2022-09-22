@@ -12,6 +12,9 @@ class Manager(ScreenManager):
 class Menu(Screen):
     _telaprodutos = ObjectProperty(None)
 
+    def test(self):
+        products_database.info_product('', '', '', 'Lorena', '')
+
     def removeProduct(self):
         self.ids.box_shop.remove_widget()
 
@@ -72,6 +75,7 @@ class Login(Screen):
             else:
                 global email
                 self.nome = c[1]
+                self.parent.ids.usr._nomevendedor.title = self.nome
                 self.idade = c[2]
                 self.emaill = c[3]
                 email = self.emaill
@@ -88,27 +92,34 @@ class Login(Screen):
         
 
 class Products(BoxLayout):
-    def __init__(self, name = '', price = '', seller = '', **kwargs):
+    def __init__(self, id = 0, name = '', price = '', seller = '', amount = 1, **kwargs):
         super().__init__(**kwargs)
+        self.id = id
         self.ids.product_name_card.text = name
         self.ids.product_price_card.text = price
         self.ids.product_seller_card.text = seller
+        self.amount = amount
 
 email = ''
 class User(Screen):
     _nomeproduto = ObjectProperty(None)
     _precoproduto = ObjectProperty(None)
+    _nomevendedor = ObjectProperty(None)
 
     def addProducts(self):
-        signin.print_oi()
         global email
-        products_database.addProducts(self._nomeproduto.text, self._precoproduto.text)
-        print(f"\033[32mO item {self._nomeproduto.text} foi adicionado ao banco de dados!\033[m")
-        x = user_database.dt_user_info(email)
-        nome_p = self._nomeproduto.text
-        price = (f"\033[33mR${str(self._precoproduto.text)}\033[m")
-        seller = x[0]
-        self.parent.ids.mn._telaprodutos.add_widget(Products(nome_p, price, seller))
+        i = products_database.addProducts(self._nomeproduto.text, self._precoproduto.text, self._nomevendedor.title)
+        if i[1] == True:
+            print(f"\033[32mO item {self._nomeproduto.text} foi adicionado ao banco de dados!\033[m")
+            x = user_database.dt_user_info(email)
+            id = i
+            nome_p = self._nomeproduto.text
+            price = (f"R${self._precoproduto.text}")
+            seller = x[0]
+            self.parent.ids.mn._telaprodutos.add_widget(Products(id, nome_p, price, seller, 1))
+        elif i[1] == False:
+            products_database.updateAmount(i[0], i[2])
+            print("Alterando o amount...")
 
 class OriShop(App):
     def build(self):

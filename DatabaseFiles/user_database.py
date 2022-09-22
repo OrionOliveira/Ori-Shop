@@ -11,11 +11,10 @@ def database_save(nome = '', idade = '', email = '', senha = ''):
             ('{nome}', '{idade}', '{email}', '{senha}')"""
     print("Adicionado ao banco de dados!")
     
-    count = cursor.execute(comando).rowcount
+    cursor.execute(comando)
     cursor.commit()
-    print(f"Usuário(s) adicionado(s): {str(count)}")
-    y = pd.read_sql("SELECT * FROM Usuários", conexao)
-    print(y.head())
+    #y = pd.read_sql("SELECT * FROM Usuários", conexao)
+    #print(y.head())
 
 def signin():
     pass
@@ -34,19 +33,19 @@ def login(email = '', senha = ''):
                         idade = s[1]
                         return True, nome, idade, email, senha
                     else:
-                        print("\033[31mSenha incorreta!")
+                        print("\033[31mSenha incorreta!\033[m")
                         return False
                 else: 
-                    print("\033[31mSenha incorreta!")
+                    print("\033[31mSenha incorreta!\033[m")
                     return False
             else:
-                print("\033[31mCampo senha é obrigatório!")
+                print("\033[31mCampo senha é obrigatório!\033[m")
                 return False
         else:
-            print("\033[31mEmail não cadastrado, cadastrar?")
+            print("\033[31mEmail não cadastrado, cadastrar?\033[m")
             return False
     else:
-        print("\033[31mCampo email é obrigatório!")
+        print("\033[31mCampo email é obrigatório!\033[m")
         return False
 
 def email_check():
@@ -79,5 +78,5 @@ def dt_user_info(email):
         senha_user = i[3]
         return nome_user, idade_user, email_user, senha_user
 
-    df = pd.read_sql(query, conexao)
-    print(df.head())
+    #df = pd.read_sql(query, conexao)
+    #print(df.head())

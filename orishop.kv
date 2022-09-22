@@ -4,6 +4,7 @@
         id: mn
         name: 'main_menu'
     User:
+        id: usr
         name: 'user'
     Signin:
         id: sgn
@@ -27,7 +28,7 @@
             ActionView:
                 ActionPrevious:
                     title: 'OriShop'
-                    on_release: root.novoproduto()
+                    on_release: root.test()
                 ActionButton:
                     id: login_button
                     text: 'Login'
@@ -52,6 +53,7 @@
 <User>:
     _nomeproduto: produto
     _precoproduto: preço
+    _nomevendedor: adm_name
 
     BoxLayout:
         orientation: 'vertical'
