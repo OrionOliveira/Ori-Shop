@@ -1,6 +1,4 @@
-from itertools import product
 from DatabaseFiles import connection_database as cndb
-from DatabaseFiles import user_database as usdb
 
 connect_results = cndb.connect()
 cursor = connect_results[0]
@@ -37,6 +35,8 @@ def addProducts(nome_produto, preco_produto, seller):
 
     if nome_produto in l_product:
         query_row = []
+        p_id = ''
+        amount = ''
         query = f"""SELECT * FROM Produtos
         WHERE nome = '{nome_produto}' and price = '{preco_produto}' and seller = '{seller}'"""
         for i in cursor.execute(query):

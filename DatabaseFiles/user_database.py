@@ -1,5 +1,4 @@
 from DatabaseFiles import connection_database as cndb
-import pandas as pd
 
 connect_results = cndb.connect()
 cursor = connect_results[0]

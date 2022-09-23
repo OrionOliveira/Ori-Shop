@@ -1,5 +1,4 @@
 import pyodbc
-import pandas as pd
 
 def connect():
     dados_conexao = ( 

@@ -11,9 +11,13 @@
         name: 'signin'
     Login:
         name: 'login'
+    Tycoon:
+        id: tyc
+        name: 'tycoon'
 
 <Menu>:
     _telaprodutos: box_shop
+    dinheiro: wallet_button
     BoxLayout:
         spacing: 10
         canvas:
@@ -30,6 +34,13 @@
                     title: 'OriShop'
                     on_release: root.test()
                 ActionButton:
+                    id: wallet_button
+                    text: 'R$00.00'
+                ActionButton:
+                    id: tycoon_button
+                    text: 'Tycoon'
+                    on_release: app.root.current = 'tycoon'
+                ActionButton:
                     id: login_button
                     text: 'Login'
                     on_release:
@@ -37,7 +48,7 @@
                         elif root.ids.login_button.text != 'Login': app.root.current = 'user'
                 ActionButton:
                     id: signin_button
-                    text: 'Signin'
+                    text: 'Sign in'
                     on_press:
                         root.resignin()
                 ActionButton:
@@ -54,6 +65,8 @@
     _nomeproduto: produto
     _precoproduto: preço
     _nomevendedor: adm_name
+    _qtdproduto: amount
+    _dinheirousuario: user_money
 
     BoxLayout:
         orientation: 'vertical'
@@ -69,6 +82,9 @@
                     id: adm_name
                     title: 'User'
                     on_release: app.root.current = 'main_menu'
+                ActionButton:
+                    id: user_money
+                    text: 'R$00.00'
                 ActionButton:
                     text: 'Exit'
                     on_release: app.stop()
@@ -96,6 +112,16 @@
                     height: 30
                 TextInput:
                     id: preço
+                    size_hint_y: None
+                    height: '30sp'
+            BoxLayout:
+                spacing: 20
+                Label:
+                    text: 'Amount:'
+                    size_hint: None, None
+                    height: 30
+                TextInput:
+                    id: amount
                     size_hint_y: None
                     height: '30sp'
             Button:
@@ -259,6 +285,7 @@
         Rectangle:
             pos: self.pos
             size: self.size
+            on_release: app.root.current = 'user'
     Label:
         id: product_seller_card
         font_size: 15
@@ -270,10 +297,67 @@
         orientation: 'vertical'
         Label:
             id: product_price_card
-            font_size: 20
+            font_size: 25
         Button:
             text: 'Buy'
             size_hint: None, None
             width: 200
             height: 40
-            on_release: app.root.ids.mn._telaprodutos.remove_widget(root)
+            on_release: app.root.get_screen('user').buy_product()
+            #on_release: app.root.ids.mn._telaprodutos.remove_widget(root)
+
+<Tycoon>:
+    user_money: tycoon_money
+
+    BoxLayout:
+        spacing: 10
+        orientation: 'vertical'
+        canvas:
+            Color:
+                rgba: 0.1, 0.1, 0.155, 0.74
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'tycoon'
+                    on_release: app.root.current = 'main_menu'
+                ActionButton:
+                    text: 'Exit'
+                    on_release: app.stop()
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: tycoon_money
+                text: '0'
+                font_size: 50
+        BoxLayout:
+            size_hint_y: None
+            height: '60sp'
+            Botao:
+                id: tycoon_add
+                text: '+1'
+                on_release: root.addMoney() 
+                on_release: root.addGenerator()
+            Botao:
+                text: 'Up'
+                size_hint_x: None
+                width: '40sp'
+        ScrollView:
+            BoxLayout:
+                id: tycoon_box
+                spacing: '10dp'
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+            
+<Tycoon_Area>:
+    size_hint_y: None
+    height: '100sp'
+    Botao:
+        id: Area_Button
+    Button:
+        text: 'Up'
+        size_hint_x: None
+        width: '40sp'
